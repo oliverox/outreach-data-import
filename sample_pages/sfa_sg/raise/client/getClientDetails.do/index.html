@@ -1,0 +1,1674 @@
+
+
+
+
+
+
+
+<html>
+  <head>
+  
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+      <title>Sales Force Automation</title>
+      
+  <script language="JavaScript">
+  <!--
+    function openWin(URL) {
+         newWindow = window.open(URL, "myWindow", 'width=800,height=600,toolbar=no,menubar=no,resizable=1,scrollbars=yes');
+    }
+    
+    function stayFocus() {
+      if(window.newWindow != null && window.newWindow.closed == false) {
+        window.newWindow.focus();
+      }
+    }
+  
+  // -->
+  </script>
+  </head>
+  
+  <BODY BGCOLOR="#ffffff" LEFTMARGIN="0" TOPMARGIN="0" MARGINHEIGHT="0" MARGINWIDTH="0" onFocus="stayFocus()">
+  
+  
+  <script type="text/javascript" src="/sfa_sg/common/js/jquery-3.1.1.js"></script>
+  <script type="text/javascript" src="/sfa_sg/common/js/jquery-ui-1.7.2.custom.min.js"></script>
+  <script type="text/javascript" src="/sfa_sg/common/js/webtrends.load.js"></script>
+  <link rel="stylesheet" href="/sfa_sg/common/stylesheet/jquery-ui-1.7.2.custom.css" />
+  <link rel="stylesheet" href="/sfa_sg/common/stylesheet/stylesheet.css" type="text/css">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  
+  <style>
+  .alertUi {
+      font-family: Verdana, Arial, Helvetica, Sans-serif;
+      font-size: 10px;
+      font-weight: normal;
+  }
+  </style>
+  <script type="text/javascript">
+  
+  var interval;
+  $(document).ready(function(){
+  var defaultInterval = 60000;
+  var firstWindowTime = 1679999;
+  var secondWindowTime =	1799999;
+  
+  //firstWindowTime = 179999;
+  //secondWindowTime =	299999;
+  //defaultInterval = 30000;
+  
+  //var firstWindowTime = 59999;
+  //var secondWindowTime = 79999;
+  //var defaultInterval = 3000;
+  
+  document.cookie="lastUpdateTime=" + (new Date().getTime()) + "; path=/sfa_sg/";
+  interval = setInterval(function(){
+    var timePassed = new Date().getTime() - getCookie("lastUpdateTime");
+    //alert("  :" + new Date().getTime() + 		  "\n  :" + getCookie("lastUpdateTime") 		  +"\n  :" + timePassed);
+    if(timePassed >= firstWindowTime && timePassed <= secondWindowTime) {
+      open1stWindow()
+    } else if(timePassed > secondWindowTime) {
+      open2ndWindow();
+    }
+  }, defaultInterval)
+  })
+  function open1stWindow(){
+      $("#dialog-confirm").dialog({
+          resizable: false,
+          height:260,
+          width:400,
+          draggable: false,
+          modal: true,
+          buttons: {
+              OK: function() {
+                needToShow2ndWindow = false;
+                document.cookie="lastUpdateTime=" +  (new Date().getTime());
+                var requestIncreaseTimeURL = '/sfa_sg/increaseSessionTime.jsp?dummy='+new Date();
+                $.ajax({ url:requestIncreaseTimeURL, async:false });
+                  $( this ).dialog( "close" );
+              }
+          }
+      });
+  
+      $("#dialog-confirm").dialog("open");
+      $("#dialog-confirm").dialog("option", "dialogClass", "alertUi");
+      $("#dialog-confirm").parent().find("button").parent().prop("align", "center");
+      $("#dialog-confirm").parent().find("button").parent().prop("class", "");
+      $("#dialog-confirm").parent().find("button").prop("class", "");
+      $("#dialog-confirm").parent().find("button").addClass("inputbutton");
+      $("#dialog-confirm").prop("style", "color: red; height: 60");
+  }
+  
+  function open2ndWindow(){
+    var requestURL = '/sfa_sg/timeoutDistableSession.jsp?dummy='+new Date();
+    $("#dialog-confirm").dialog("close");
+    clearInterval(interval);
+      $("#dialogInformToRelogin").dialog({
+          resizable: false,
+          draggable: false,
+          height:240,
+          width:400,
+          modal: true,
+          buttons: {
+              OK: function() {
+                //window.location.href="/sfa_sg/index.jsp";
+                window.location.href="javascript:window.close();";
+                  $( this ).dialog( "close" );
+              }
+          }
+      });
+      $("#dialogInformToRelogin").dialog("option", "dialogClass", "alertUi");
+      $("#dialogInformToRelogin").parent().find("button").parent().prop("align", "center");
+      $("#dialogInformToRelogin").parent().find("button").parent().prop("class", "");
+      $("#dialogInformToRelogin").parent().find("button").prop("class", "");
+      $("#dialogInformToRelogin").parent().find("button").addClass("inputbutton");
+      $.ajax({ url:requestURL, async:false });
+  } 
+  
+  function getCookie(cookieName) {
+  var arrcookie=document.cookie.split("; ");
+  for(var i=0;i<arrcookie.length;i++){
+     var arr=arrcookie[i].split("=");
+     if(cookieName==arr[0])
+       return arr[1];
+  }
+  return "0";
+  }
+  
+  </script>
+  
+  <!-- WR/SG/16034 - 	Text changes from SFA Online to PRUSALES ENTERPRISE -->
+  <div id="dialog-confirm" title="PRUSALES ENTERPRISE - Your session is about to expire!" class="alertUi" style="display: none; ">
+      <p>You are about to be automatically logged out from your existing session in 2 minutes. Click 'OK' to continue session.</p>
+  </div>
+  
+  <div id="dialogInformToRelogin" title="PRUSALES ENTERPRISE - Your session has expired!" class="alertUi" style="color: red; display: none;">
+      <p>Your session has timed out. Click 'OK' to return to login page.</p>
+  </div>
+  <!-- SFA Header end -->
+  
+  
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <script type="text/javascript" src="/sfa_sg/common/js/jquery-3.1.1.js"></script>
+  <script type="text/javascript" src="/sfa_sg/common/js/jquery-ui-1.7.2.custom.min.js"></script>
+  <script type="text/javascript" src="/sfa_sg/common/js/webtrends.load.js"></script>
+  <link rel="stylesheet" href="/sfa_sg/common/stylesheet/jquery-ui-1.7.2.custom.css" />
+  <link rel="stylesheet" href="/sfa_sg/common/stylesheet/stylesheet.css" type="text/css">
+    
+  
+  <SCRIPT LANGUAGE="JavaScript1.2"
+          SRC="/sfa_sg/common/js/HM_Loader.js"
+          TYPE="text/javascript">
+  </SCRIPT>
+  <SCRIPT LANGUAGE="JavaScript1.2" TYPE="text/javascript">
+  HM_Array1=[[140,42,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+  ["Financial Consultant","/sfa_sg/raise/production/getFCPruCredit.do",1,0,1],
+  ]
+  HM_Array1_1=[[],["Financial Consultant Production (PRUcredit$)","/sfa_sg/raise/production/getFCPruCredit.do",1,0,0],
+  ["Financial Consultant EFYC","/sfa_sg/raise/production/getAdviserEFYC.do",1,0,0],
+  ["Financial Consultant Persistency","/sfa_sg/raise/production/getAdviserPersistency.do",1,0,0],
+  ["FC Production Bonus Tracking Report","/sfa_sg/raise/production/getFCProductionBonusTrackingReport.do",1,0,0],
+  
+  ["Financial Consultant Special Persistency Bonus","/sfa_sg/raise/production/getFCSpecialPersBonus.do",1,0,0],
+  ["Financial Consultant Premium Payment Rate","/sfa_sg/qualitybusiness/PremiumPaymentRate.do",1,0,0],
+  ["Financial Consultant Single Premium Persistency","/sfa_sg/qualitybusiness/SinglePremiumPersistencyFC.do",1,0,0],
+  
+  ]
+  HM_Array2=[[140,120,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+  ["Proposal Status","/sfa_sg/raise/proposal/getProposalSummary.do",1,0,0]
+  ]
+  HM_Array2_1=[[],]
+  HM_Array3=[[140,180,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+  ["Policy Status","/sfa_sg/raise/policy/getPolicySummary.do",1,0,0],
+  ["MTA Follow-Ups","/sfa_sg/raise/policy/PolicySummary4Mta.do",1,0,0],
+  ["NF Reinstatement","/sfa_sg/raise/policy/getNFReinstatemen.do",1,0,0],
+  ["Lapse Reinstatement","/sfa_sg/raise/policy/getLapseReinstatement.do",1,0,0],
+  ["Redating","/sfa_sg/raise/policy/getRedating.do",1,0,0]
+  ]
+  HM_Array3_1=[[],]
+  HM_Array3_2=[[],]
+  HM_Array3_3=[[],]
+  HM_Array3_4=[[],]
+  HM_Array3_5=[[],]
+  HM_Array4=[[100,235,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+  ["Claims History","/sfa_sg/raise/claims/getClaimsHistory.do",1,0,0]
+  ]
+  HM_Array4_1=[[],]
+  HM_Array5=[[140,285,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+  ["Client List","/sfa_sg/raise/client/getPolicyOwnerList.do",1,0,1],
+  ["Birthday List","/sfa_sg/raise/client/getPolicyOwnerBirthdayList.do",1,0,1],
+  ["Print Client List","/sfa_sg/raise/client/getAllMailingLabels.do",1,0,1]
+  ]
+  HM_Array5_1=[[],["By Policyowner","/sfa_sg/raise/client/getPolicyOwnerList.do",1,0,0],
+  ["By Life Assured","/sfa_sg/raise/client/getLifeAssuredList.do",1,0,0],
+  ["By Deceased Policyowner","/sfa_sg/raise/client/getDeceasedList.do",1,0,0],
+  ["Active Client","/sfa_sg/raise/client/getActiveClientList.do",1,0,0],
+  ["Non-Active Client","/sfa_sg/raise/client/getNonActiveClientList.do",1,0,0]
+  ]
+  HM_Array5_2=[[],["By Policyowner","/sfa_sg/raise/client/getPolicyOwnerBirthdayList.do",1,0,0],
+  ["By Life Assured","/sfa_sg/raise/client/getLifeAssuredBirthdayList.do",1,0,0]
+  ]
+  HM_Array5_3=[[],["Mailing Labels & Envelope","/sfa_sg/raise/client/getAllMailingLabels.do",1,0,0]
+  ]
+  HM_Array6=[[140,330,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+  ["FC Registers","/sfa_sg/raise/report/getPremiumDueList.do",1,0,1],
+  ["Promotions","/sfa_sg/pruexclusive/report/getPromotionsCampaignCustomerListing.do",1,0,0],
+  ["PruCard","/sfa_sg/pruexclusive/report/getCardCampaignCustomerListing.do",1,0,0],
+  ["New Servicing Requests","/sfa_sg/raise/report/newServicingRequests.do",1,0,0],
+  ["Orphan Client Assignment","/sfa_sg/raise/report/OrphanClientAssignment.do",1,0,0],
+  ["Orphan Client Contact","/sfa_sg/raise/report/OrphanClientContactCommand.do",1,0,0],
+  ["ROP Listing","/sfa_sg/raise/report/getROPValueList.do",1,0,0],
+  ["ROP Grading Report","/sfa_sg/raise/report/getROPGradingReport.do",1,0,0]
+  ]
+  HM_Array6_1=[[],["Premium Due List","/sfa_sg/raise/report/getPremiumDueList.do",1,0,0],
+  ["Automatic Premium Loan (APL) List","/sfa_sg/raise/report/getAPLRegister.do",1,0,0],
+  ["Unpaid Premium (Non-Forfeiture) Notice","/sfa_sg/raise/report/getNonForfeitureReport.do",1,0,0],
+  ["CPF Auto Paid Up List","/sfa_sg/raise/report/getAutoPaidUpRegister.do",1,0,0],
+  ["Bonus List","/sfa_sg/raise/report/getBonusRegister.do",1,0,0]
+  ]
+  HM_Array6_2=[[],]
+  HM_Array6_3=[[],]
+  HM_Array6_4=[[],]
+  HM_Array6_5=[[],]
+  HM_Array6_6=[[],]
+  HM_Array6_7=[[],]
+  HM_Array6_8=[[],]
+  HM_Array7=[[180,390,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+  ["Awards & Performance 2019/2020","/sfa_sg/prusales/awards/awardsHome.do",1,0,0],
+  ["Awards & Performance 2018/2019","/sfa_sg/prusales_prev/awards/awardsHome.do",1,0,0],
+  ]
+  HM_Array7_1=[[],]
+  HM_Array7_2=[[],]
+  HM_Array8=[[150,529,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+  ["Financial Consultant","/sfa_sg/raise/income/getAdviserIncomeSummary.do",1,0,1]
+  ]
+  HM_Array8_1=[[],["Financial Consultant Income Summary","/sfa_sg/raise/income/getAdviserIncomeSummary.do",1,0,0],
+  ["FC Production Bonus Report","/sfa_sg/raise/income/adviserProductionBonusReportCommand.do",1,0,0],
+  ["FC Annual Income Statement","/sfa_sg/raise/income/annualIncomeStatementCommand.do",1,0,0],
+  ["FC Shares Incentive Statement","/sfa_sg/raise/income/getSharesFCIncentiveStatement.do",1,0,0],
+  ["Long Term Incentive Pool","/sfa_sg/raise/income/longTermIncentivepoolFC.do",1,0,0],
+  
+  
+  ["Non-Cash Benefits Statement","/sfa_sg/raise/income/adviserNonCashBenefitsStatement.do",1,0,0],
+  
+  
+  ["Self-Billing Tax Invoice","/sfa_sg/raise/income/selfBillingTaxInvoice.do",1,0,0],
+  ["Commission Rate Table","/sfa_sg/commonReportDisplay.do",1,0,0],
+  ["Request for Income Statement","/sfa_sg/raise/income/incomeStatementRequestCommand.do",1,0,1],
+  ["View Requested Income Statements","/sfa_sg/raise/income/viewIncomeStatementRequestCommand.do",1,0,0]
+  ]
+  HM_Array8_1_9=[[],["New Request","/sfa_sg/raise/income/incomeStatementRequestCommand.do",1,0,0],
+  ["View Requested Income Statements","/sfa_sg/raise/income/viewIncomeStatementRequestCommand.do",1,0,0]
+  ]
+  HM_Array9=[[140,640,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+  ["Financial Consultant","/sfa_sg/raise/incentives/getTrackingFCHomeCommand.do",1,0,1]
+  ]
+  HM_Array9_1=[[],["Incentive Report (Tracking)","/sfa_sg/raise/incentives/getTrackingFCHomeCommand.do",1,0,0],
+  ["Incentive Report (Ended)","/sfa_sg/raise/incentives/getTrackingInactiveFCHomeCommand.do",1,0,0]
+  ]
+  
+  
+  HM_GL_ImageSrc = "/sfa_sg/raise/common/images/hm_more_grey_right.gif";
+  HM_GL_ImageSrcLeft = "";
+  
+  HM_GL_ImageSrcOver = "/sfa_sg/raise/common/images/hm_more_cyan_right.gif";
+  HM_GL_ImageSrcLeftOver = "";
+  if(HM_IsMenu) {
+    document.write("<SCR" + "IPT LANGUAGE='JavaScript1.2' SRC='/sfa_sg/common/js/HM_Script"+ HM_BrowserString +".js' TYPE='text/javascript'><\/SCR" + "IPT>");
+  }
+  </SCRIPT>
+  
+  
+  
+  
+  
+  <SCRIPT LANGUAGE="JavaScript1.2" TYPE="text/javascript">
+  <!--
+      function setSelectedUnit(comboIndexToSet,myval){
+        for(var i=0;i<comboIndexToSet.options.length;i++){
+          if( comboIndexToSet.options[i].value.toUpperCase() == myval.toUpperCase())
+          {
+             comboIndexToSet.selectedIndex=i;
+             break;
+          }
+        }
+      }
+  
+  //-->
+  </script>
+  <div style="width:100%;">
+    <div style="background-color: #e33b39;border: none;border-radius: 0;box-shadow: 0 3px 2px 0 rgba(204, 204, 204, 0.8);display:block;min-height:60px;">
+      <div style="  margin-left: auto;margin-right: auto;max-width: 1170px;padding-left: 15px;padding-right: 15px;width: auto;">
+        <div>
+          <div style="float:left;">
+            <div style="display:block; float:left;"><a href="#"><img src="/sfa_sg/common/images/logo.png" border="0" /></a></div>
+            <div style=" float: left;"><a href="#" style=" color: #fff;display: block; font-family: Arial,Helvetica,sans-serif; font-size: 24px;font-weight: 700;margin-left: 15px;margin-top: 15px;text-decoration:none;">PRU<span style="font-weight:normal;">RAISe</span></a></div>
+          </div>
+          <div style="float:right;">
+            <a href="javascript:window.close()" class="logout" style=" color: #fff;display: block;margin-top: 21px;text-decoration:none;font-family: Arial,Helvetica,sans-serif; font-size:13px;">Close</a>
+          </div>
+          <div style="float:right;">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+          </div>
+          <div style="float:right;">
+            <a href="/sfa_sg/newsfahome.do" class="logout" style=" color: #fff;display: block;margin-top: 21px;text-decoration:none;font-family: Arial,Helvetica,sans-serif; font-size:13px;">PRURAISe</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <table border="0" cellspacing="0" cellpadding="0" width="100%">
+  <tr>
+      <td valign="top" width="100%">
+      <table border="0" cellspacing="0" cellpadding="0" width="100%">
+        <tr bgcolor="#E5E3E4">
+        <td width="2" height="22" nowrap><img src="/sfa_sg/common/images/spacer.gif" width="1" height="1"></td>
+        
+        
+          <td><a href="#" ONMOUSEOVER="popUp('HM_Menu1',event)" ONMOUSEOUT="popDown('HM_Menu1')"><img src="/sfa_sg/raise/common/images/sfanew_ais_production_option.gif " alt="Production" border="0"></a></td>
+          <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>      
+          <td><a href="#" ONMOUSEOVER="popUp('HM_Menu2',event)" ONMOUSEOUT="popDown('HM_Menu2')"><img src="/sfa_sg/raise/common/images/sfanew_ais_proposal_option.gif" alt="Proposal" border="0"></a></td>
+          <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>      
+          <td><a href="#" ONMOUSEOVER="popUp('HM_Menu3',event)" ONMOUSEOUT="popDown('HM_Menu3')"><img src="/sfa_sg/raise/common/images/sfanew_ais_policy_option.gif" alt="Policy" border="0"></a></td>
+          <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>      
+          <td><a href="#" ONMOUSEOVER="popUp('HM_Menu4',event)" ONMOUSEOUT="popDown('HM_Menu4')"><img src="/sfa_sg/raise/common/images/sfanew_ais_claims_option.jpg" alt="Claims" border="0"></a></td>
+          <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>
+          <td><a href="#" ONMOUSEOVER="popUp('HM_Menu5',event)" ONMOUSEOUT="popDown('HM_Menu5')"><img src="/sfa_sg/raise/common/images/sfanew_ais_client_option.gif" alt="Client" border="0"></a></td>
+          <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>  
+          <td><a href="#" ONMOUSEOVER="popUp('HM_Menu6',event)" ONMOUSEOUT="popDown('HM_Menu6')"><img src="/sfa_sg/raise/common/images/sfanew_ais_reports_option.gif" alt="Reports" border="0"></a></td>
+          <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td> 
+          <!--  td><a href="#" ONMOUSEOVER="popUp('HM_Menu7',event)" ONMOUSEOUT="popDown('HM_Menu7')"><img src="/sfa_sg/raise/common/images/sfanew_ais_awards_option.gif" alt="Awards and Performance" border="0"></a></td -->
+          <td><a href="#" ONMOUSEOVER="popUp('HM_Menu7',event)" ONMOUSEOUT="popDown('HM_Menu7')"><img src="/sfa_sg/raise/common/images/sfanew_ais_awards_option.gif" alt="Awards and Performance" border="0"></a></td>
+                <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td> 
+                <td><a href="#" ONMOUSEOVER="popUp('HM_Menu8',event)" ONMOUSEOUT="popDown('HM_Menu8')"><img src="/sfa_sg/raise/common/images/sfanew_ais_income_option.gif" alt="Income Earnings" border="0"></a></td>    
+          <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>     
+          <td><a href="#" ONMOUSEOVER="popUp('HM_Menu9',event)" ONMOUSEOUT="popDown('HM_Menu9')"><img src="/sfa_sg/raise/common/images/sfanew_ais_incentive_option.gif" alt="Incentive" border="0"></a></td>
+        
+        <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>
+              
+        <td><a href="/sfa_sg/raise/myrewards/getMyRewards.do"><img src="/sfa_sg/raise/common/images/sfanew_my_rewards_option.gif" alt="MyRewards" border="0"></a></td>
+        <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>
+              
+        <td><a href="/sfa_sg/raise/search/getSearchPage.do"><img src="/sfa_sg/raise/common/images/sfanew_ais_search_option.gif" alt="Search" border="0"></a></td>
+        <!--<td><a href="/sfa_sg/raise/search/getSearchPage.do"><img src="/sfa_sg/raise/common/images/sfanew_ais_search_option.gif" border="0"></a></td>-->
+              <td width="100%"><img src="/sfa_sg/common/images/spacer.gif" width="1" height="1"></td>
+          </tr>
+          </table>
+  
+          <table border="0" cellspacing="0" cellpadding="0" width="100%">
+          <tr bgcolor=#FFFFFF>
+              <td height=1><img src="/sfa_sg/common/images/spacer.gif" width="1" height="1"></td>
+          </tr>
+          </table>
+    </td>
+  </tr>
+  </table>
+  
+  
+  
+  
+  
+  <script language="javascript">
+  <!--
+    function generatePolicyPDF(para){
+      window.open(para, '', 'toolbar=0, resizable=1');	   
+    }  // generatePolicyPDF
+  // -->
+  </script>
+  
+  <table border="0" cellspacing="1" cellpadding="5" width="100%">
+    <tr>
+      <td align="center">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+  
+              <b>Client Information</b><br>
+  
+           (<b>Financial Consultant:&nbsp;&nbsp; <font color="#CC0000">Cindy Wong</font></b> 
+           [<b>K98-20774</b>])
+        </font>	
+      </td>
+      <td width="5%" align="right" valign="top"><img src="/sfa_sg/raise/common/images/sfanew_raise_landscape_icon.gif" border="0" width="34" height="26"></td>	   	      
+    </tr>
+  </table>
+  <table border="0" cellspacing="1" cellpadding="5" width="100%">
+    <tr>
+      <td height="35">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+          <font color="#CC0000">
+            <b>Client Information</b>
+          </font>  &nbsp;|&nbsp;
+    
+          <a href="#policyinfo">Policy Information</a>  
+    
+          &nbsp;|&nbsp;
+    
+          &nbsp;Proposal Information
+    
+    
+                &nbsp;|&nbsp;
+          <a href="/sfa_sg/raise/portfolio/getPortfolioSummary.do?selectedAdviserID=460748&clientID=16293281&sid=AE2E6FBEE6AC9E01C819C51F9DC44DDD" >
+            PruLink Portfolio Information
+          </a>
+          
+          &nbsp;|&nbsp;
+          <a href="/sfa_sg/raise/portfolio/getPSVPortfolioSummary.do?selectedAdviserID=460748&clientID=16293281&sid=AE2E6FBEE6AC9E01C819C51F9DC44DDD" >
+            PSV Portfolio Information
+          </a>
+        </font>
+      </td>
+    </tr>
+  </table>
+  
+  <!--Personal Particulars -->
+  <a name="clientdetails"></a> 
+  
+  &nbsp;<font face="arial, verdana" size="-1" class="content">
+    <b>Personal Information</b>
+  </font>
+  <br>
+  <table border="0" cellspacing="1" cellpadding="5" width="100%">
+    <tr>
+      <td align="left" valign="top" bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+            <b>Title:</b>
+        </font>	
+      </td>
+      <td align="left" valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+            Mr
+        </font>	
+      </td>
+      <td align="left" valign="top" bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+            <b>Gender:</b>
+        </font>	
+      </td>
+        <td align="left" valign="top" bgcolor="#EFEFEF" width="30%">
+          <font face="arial, verdana" size="-1" color="#000000" class="content">
+          Male
+            </font>	
+      </td>          
+    </tr>          
+    <tr>          
+      <td align="left" valign="top" bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+            <b>Given Name/ First Name:</b>
+        </font>	
+      </td>
+        <td align="left" valign="top" bgcolor="#EFEFEF" width="30%">
+          <font face="arial, verdana" size="-1" color="#000000" class="content">
+            Davissen
+            </font>	
+      </td>
+        <td align="left" valign="top" bgcolor="#6699CC" width="20%">
+          <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+              <b>Race:</b>
+            </font>	
+      </td>
+        <td align="left" valign="top" bgcolor="#EFEFEF" width="30%">
+          <font face="arial, verdana" size="-1" color="#000000" class="content">
+          
+        
+              -
+            
+        </font>	
+      </td>          
+    </tr>
+    <tr>          
+      <td align="left" valign="top" bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+          <b>Family Name/ Last Name:</b>
+        </font>	
+      </td>
+      <td align="left" valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+          Virasawmy 
+        </font>	
+      </td> 
+        <td align="left" valign="top" bgcolor="#6699CC" width="20%">
+          <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+          <b>Date Of Birth:</b>
+        </font>	
+      </td>
+      <td align="left" valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">		
+        
+          
+          19-Dec-1989
+        
+        </font>	
+      </td>    
+    </tr>
+    <tr>
+      <td align="left" valign="top" bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+          <b>Preferred Name/ Christian Name:</b>
+        </font>	
+      </td>
+      <td align="left" valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+          -
+        </font>	
+      </td>          
+      <td align="left" valign="top" bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+          <b>Marital Status:</b>
+        </font>	
+      </td>
+      <td align="left" valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+        
+        
+          Single
+        
+        </font>	
+      </td>            
+    </tr>
+    <tr>
+      <td align="left" valign="top" bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+          <b>Identification Number:</b>
+        </font>	
+      </td>
+      <td align="left" valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+        
+        
+          S8976853E 
+        
+        </font>	
+      </td> 
+      <td align="left" valign="top" bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+          <b>Nationality:</b>
+        </font>	
+      </td>
+      <td align="left" valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+        
+        
+          Singapore PR
+        
+        </font>	
+      </td>          
+    </tr>
+      
+  </table>
+  
+  <br>
+  <!-- Contact Information -->       
+  <table border="0" cellspacing="1" cellpadding="5" width="100%">
+    <tr>
+      <td bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+          
+          <b>Residential Address:</b>
+          
+        </font>	
+      </td>
+      <td colspan=3 bgcolor="#EFEFEF" width="80%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+        
+          
+          8 Boon Keng Road 34-152 City View @ Boon Keng Singapore 330008
+          
+        </font>	
+      </td>
+    </tr> 
+    <tr>
+      <td align="left" valign="top"  bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+          <b>Home Number:</b>
+        </font>	
+      </td>
+      <td align="left" valign="top"  bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+        
+        
+          -
+        
+        </font>	
+      </td>
+      <td align="left" valign="top"  bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+          <b>Office Number:</b>
+        </font>	
+      </td>
+      <td align="left" valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+        
+        
+          -
+        
+        </font>	
+      </td>
+    </tr>       
+    <tr>
+      <td align="left" valign="top"  bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+          <b>Mobile Number:</b>                   
+        </font>	
+      </td>
+      <td align="left" valign="top"  bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+        
+        
+          65-83231928
+        
+        </font>	
+      </td>
+      <td align="left" valign="top"  bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+          <b>Email Address:</b>
+        </font>	
+      </td>
+      <td align="left" valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+        
+        
+          kvirasawmy@gmail.com
+        
+        </font>	
+      </td>
+      
+    </tr>  
+  </table>
+  
+  <br>
+  <!-- Other Information -->
+  <table border="0" cellspacing="1" cellpadding="5" width="100%">
+    <tr>
+      <td valign="top" bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+          <b>Occupation:</b>
+        </font>	
+      </td>
+      <td valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+        
+        
+          Engineer (electronic)
+        
+        </font>	
+      </td>
+      <td valign="top" bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+          <b>Nature Of Business:</b>
+        </font>	
+      </td>
+      <td valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+        
+        
+          -
+        
+        </font>	
+      </td>
+    </tr>
+  
+    <tr>
+      <td valign="top" bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+          <b>Portfolio Solutions Sign Up Status:</b>
+        </font>	
+      </td>
+      <td valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+        
+        
+          No
+        
+        </font>	
+      </td>
+      <td valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+          &nbsp;
+        </font>	
+      </td>
+      <td valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+          &nbsp;
+        </font>	
+      </td>
+    </tr>
+  
+    <!-- PACSSGPPRUR 464 added by Chee Yan -->
+    <tr>
+      <td valign="top" bgcolor="#6699CC" width="20%">
+        <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+          <b>Annual Bonus Update Correspondence:</b>
+        </font>	
+      </td>
+      <td valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+        
+        
+          -
+        
+        </font>	
+      </td>
+      <td valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+          &nbsp;
+        </font>	
+      </td>
+      <td valign="top" bgcolor="#EFEFEF" width="30%">
+        <font face="arial, verdana" size="-1" color="#000000" class="content">
+          &nbsp;
+        </font>	
+      </td>
+    </tr>
+    <!--PACSSGPPRUR 464 added by Chee Yan  -->
+  </table>            
+  
+  <!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+  <br><br>
+   <table border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+   <tr>
+     <td valign="bottom">&nbsp;&nbsp;<font face="arial, verdana" size="-1" class="content"><b>Consent Information</b></font></td> 	
+   </tr>
+   </table>
+  
+  <table border="0" cellspacing="1" cellpadding="5" width="100%" bgcolor="#ffffff">
+                <tr bgcolor="#0033CC">
+              <td valign="top" align="left" width="18%">
+                <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Date </b>
+                    </font>
+                  </td>
+                  <td valign="top" align="left" width="18%">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Status</b>
+                    </font>
+                  </td>
+                   <td valign="top" align="left" width="16%">
+                     <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Post</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="left" width="16%">
+                     <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Email</b>
+                    </font>
+                  </td> 
+                   <td valign="top" align="left" width="16%">
+                     <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Telephone</b>
+                    </font>
+                  </td>  
+                  <td valign="top" align="left" width="16%">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>SMS</b>
+                    </font>
+                  </td>
+            </tr>	
+            <tr bgcolor="#EFEFEF">
+              <td valign="top" align="left">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+              <!-- 1820 Change consent date 9999-12-31 to - -->
+              
+              
+                     </font>
+                   </td>
+              <td valign="top" align="left">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  
+                     </font>
+                   </td>
+              <td valign="top" align="left">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  
+                     </font>
+                   </td>
+              <td valign="top" align="left">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  
+                     </font>
+                   </td>
+              <td valign="top" align="left">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  
+                     </font>
+                   </td>
+              <td valign="top" align="left">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  
+                     </font>
+                   </td>
+            </tr>				
+          </table>
+  <!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+  
+  
+  <!-- Client Policy Details -->
+  <a name="policyinfo"></a>
+  
+  <br><br>
+   <table border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+   <tr>
+     <td valign="bottom">&nbsp;&nbsp;<font face="arial, verdana" size="-1" class="content"><b>Policy Information</b></font></td>
+     <td>&nbsp;&nbsp;<a href="javascript:generatePolicyPDF('/sfa_sg/raise/client/getClientInsuranceInfoPdf.do?selectedAdviserID=460748&clientID=16293281&sid=AE2E6FBEE6AC9E01C819C51F9DC44DDD')"><img border="0" align="top" src="/sfa_sg/raise/common/images/view_pdf_small_icon.gif" alt='View Client Summary of Policy Information in PDF Version.'></a></td><!--  SGPSFA-2044 To allow PD FPE to search info from Singpost/Maybank base 15042015 -->
+   </tr>
+   </table>
+  
+  
+      <table border="0" cellspacing="1" cellpadding="0" width="100%" bgcolor="#AAAAAA">
+        <tr>
+          <td>
+              <table border="0" cellspacing="1" cellpadding="5" width="100%" bgcolor="#ffffff">
+                <tr bgcolor="#0033CC">
+              <td valign="top" align="left" width="10%">
+                <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Policy Number</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="left" colspan="2" width="20%">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Plan Type</b>
+                    </font>
+                  </td>
+                  
+                   <td valign="top" align="center" width="10%">
+                     <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Policyowner Name</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center" width="10%">
+                     <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Life Assured Name</b>
+                    </font>
+                  </td> 
+                   <td valign="top" align="center" width="10%">
+                     <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Policy Status</b>
+                    </font>
+                  </td>  
+                  <td valign="top" align="center" width="13%">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Payment Frequency</b>
+                    </font>
+                  </td> 	
+                   <td valign="top" align="center" width="12%">
+                     <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                  <b>Payment Method</b>
+                    </font>
+                  </td>
+            </tr>
+            <tr bgcolor="#EFEFEF">
+              <td valign="top" align="left">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  
+                  <!--  SGPSFA-2044 To allow PD FPE to search info from Singpost/Maybank base 15042015 -->
+                  <a href="/sfa_sg/raise/policy/getPolicyDetail.do?selectedAdviserID=460748&policyID=16734797&sid=8E11F83B5B86E6A214F5DB6AEDF471F8" >
+                    65011382
+                  </a>
+      
+                     </font>
+      
+                   </td>
+                   <td valign="top" align="left" colspan="2">
+                <table border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td valign="top"><font face="arial, verdana" size="-1">PruPersonal Accident&nbsp;[PAU]</font></td>
+                  </tr>
+                </table>
+              </td>
+              
+              
+                  
+                   <td valign="top" align="center">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  Virasawmy Davissen<br>
+                  
+                </font>
+              </td>
+              <td valign="top" align="center">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  Virasawmy Davissen<br>
+                  
+                </font>
+              </td>
+                   <td valign="top" align="center">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  In Force
+                     </font>
+                   </td>	
+                   <td valign="top" align="center">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      Annual
+                     </font>
+              </td>	       		       		       	       	       	
+                   <td valign="top" align="center">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      Credit Card
+                     </font>
+                   </td>	
+                 </tr>
+          </table>   	    
+              <table border="0" cellspacing="1" cellpadding="5" width="100%" bgcolor="#ffffff">
+                <tr bgcolor="#0033CC">
+                  <td valign="top" align="left">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Component</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Status</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Sum Assured</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Instalment Premium</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Single Premium</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Premium Cessation Date</b>
+                    </font>
+                  </td>	
+                         
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Risk Commencement Date</b>
+                    </font>
+                  </td>
+                         
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Risk Cessation Date</b>
+                    </font>
+                  </td>
+                </tr>  
+      
+            <tr bgcolor="#A7CEEF">
+              <td valign="top" align="left">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      PruPersonal Accident&nbsp;[XAD8]
+                     </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+      
+                  In Force
+      
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      100,000.00
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      175.00	
+                  </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00	
+                </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      29-Apr-2064
+                </font>
+              </td>	   
+                                                                
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                       29-Apr-2017
+                </font>
+              </td>
+                          
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                       29-Apr-2064
+                </font>
+              </td>
+            </tr> 
+      
+               <tr bgcolor="#EFEFEF">
+              <td valign="top" align="left">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      Medical Reimbursement&nbsp;[XMR8]
+                     </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+      
+                      In Force
+      
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      2,000.00
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00	
+                  </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00	
+                </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      29-Apr-2064
+                </font>
+              </td>	  
+                                                                  
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                       29-Apr-2017
+                </font>
+              </td>
+                          
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                       29-Apr-2064
+                </font>
+              </td>
+            </tr> 
+      
+               <tr bgcolor="#DDDDDD">
+              <td valign="top" align="left">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      Traditional Chinese Medicine&nbsp;[XTC8]
+                     </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+      
+                      In Force
+      
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      500.00
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00	
+                  </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00	
+                </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      29-Apr-2064
+                </font>
+              </td>	  
+                                                                  
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                       29-Apr-2017
+                </font>
+              </td>
+                          
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                       29-Apr-2064
+                </font>
+              </td>
+            </tr> 
+      
+          </table>
+        </td>
+      </tr>
+    </table>
+    <br><br>
+  
+      <table border="0" cellspacing="1" cellpadding="0" width="100%" bgcolor="#AAAAAA">
+        <tr>
+          <td>
+              <table border="0" cellspacing="1" cellpadding="5" width="100%" bgcolor="#ffffff">
+                <tr bgcolor="#0033CC">
+              <td valign="top" align="left" width="10%">
+                <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Policy Number</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="left" colspan="2" width="20%">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Plan Type</b>
+                    </font>
+                  </td>
+                  
+                   <td valign="top" align="center" width="10%">
+                     <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Policyowner Name</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center" width="10%">
+                     <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Life Assured Name</b>
+                    </font>
+                  </td> 
+                   <td valign="top" align="center" width="10%">
+                     <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Policy Status</b>
+                    </font>
+                  </td>  
+                  <td valign="top" align="center" width="13%">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Payment Frequency</b>
+                    </font>
+                  </td> 	
+                   <td valign="top" align="center" width="12%">
+                     <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                  <b>Payment Method</b>
+                    </font>
+                  </td>
+            </tr>
+            <tr bgcolor="#EFEFEF">
+              <td valign="top" align="left">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  
+                  <!--  SGPSFA-2044 To allow PD FPE to search info from Singpost/Maybank base 15042015 -->
+                  <a href="/sfa_sg/raise/policy/getPolicyDetail.do?selectedAdviserID=460748&policyID=16736052&sid=9A025E639E4D3069F679031EF47D683E" >
+                    65011364
+                  </a>
+      
+                     </font>
+      
+                   </td>
+                   <td valign="top" align="left" colspan="2">
+                <table border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td valign="top"><font face="arial, verdana" size="-1">PruExtra&nbsp;[PMB]</font></td>
+                  </tr>
+                </table>
+              </td>
+              
+              
+                  
+                   <td valign="top" align="center">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  Virasawmy Davissen<br>
+                  
+                </font>
+              </td>
+              <td valign="top" align="center">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  Virasawmy Davissen<br>
+                  
+                </font>
+              </td>
+                   <td valign="top" align="center">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  In Force
+                     </font>
+                   </td>	
+                   <td valign="top" align="center">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      Annual
+                     </font>
+              </td>	       		       		       	       	       	
+                   <td valign="top" align="center">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      Credit Card
+                     </font>
+                   </td>	
+                 </tr>
+          </table>   	    
+              <table border="0" cellspacing="1" cellpadding="5" width="100%" bgcolor="#ffffff">
+                <tr bgcolor="#0033CC">
+                  <td valign="top" align="left">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Component</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Status</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Sum Assured</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Instalment Premium</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Single Premium</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Premium Cessation Date</b>
+                    </font>
+                  </td>	
+                         
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Risk Cessation Date</b>
+                    </font>
+                  </td>
+                </tr>  
+      
+            <tr bgcolor="#A7CEEF">
+              <td valign="top" align="left">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      PruExtra&nbsp;[PSED]
+                     </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+      
+                  In Force
+      
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00	
+                  </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00	
+                </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      08-May-2099
+                </font>
+              </td>	   
+                         
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                       08-May-2099
+                </font>
+              </td>
+            </tr> 
+      
+               <tr bgcolor="#EFEFEF">
+              <td valign="top" align="left">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      PruExtra (Premier)&nbsp;[PMB1]
+                     </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+      
+                      Terminate due to Switch
+      
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      657.60	
+                  </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00	
+                </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      08-May-2021
+                </font>
+              </td>	  
+                          
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                       08-May-2021
+                </font>
+              </td>
+            </tr> 
+      
+               <tr bgcolor="#DDDDDD">
+              <td valign="top" align="left">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      PruExtra Premier Lite&nbsp;[PML1]
+                     </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+      
+                      In Force
+      
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      278.00	
+                  </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00	
+                </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      08-May-2021
+                </font>
+              </td>	  
+                          
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                       08-May-2021
+                </font>
+              </td>
+            </tr> 
+      
+          </table>
+        </td>
+      </tr>
+    </table>
+    <br><br>
+  
+      <table border="0" cellspacing="1" cellpadding="0" width="100%" bgcolor="#AAAAAA">
+        <tr>
+          <td>
+              <table border="0" cellspacing="1" cellpadding="5" width="100%" bgcolor="#ffffff">
+                <tr bgcolor="#0033CC">
+              <td valign="top" align="left" width="10%">
+                <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Policy Number</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="left" colspan="2" width="20%">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Plan Type</b>
+                    </font>
+                  </td>
+                  
+                   <td valign="top" align="center" width="10%">
+                     <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Policyowner Name</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center" width="10%">
+                     <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Life Assured Name</b>
+                    </font>
+                  </td> 
+                   <td valign="top" align="center" width="10%">
+                     <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Policy Status</b>
+                    </font>
+                  </td>  
+                  <td valign="top" align="center" width="13%">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Payment Frequency</b>
+                    </font>
+                  </td> 	
+                   <td valign="top" align="center" width="12%">
+                     <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                  <b>Payment Method</b>
+                    </font>
+                  </td>
+            </tr>
+            <tr bgcolor="#EFEFEF">
+              <td valign="top" align="left">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  
+                  <!--  SGPSFA-2044 To allow PD FPE to search info from Singpost/Maybank base 15042015 -->
+                  <a href="/sfa_sg/raise/policy/getPolicyDetail.do?selectedAdviserID=460748&policyID=16736051&sid=6665AA0300EDE01E5EDED1A7F3D1B4C7" >
+                    65011355
+                  </a>
+      
+                     </font>
+      
+                   </td>
+                   <td valign="top" align="left" colspan="2">
+                <table border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td valign="top"><font face="arial, verdana" size="-1">PruShield&nbsp;[PM1]</font></td>
+                  </tr>
+                </table>
+              </td>
+              
+              
+                  
+                   <td valign="top" align="center">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  Virasawmy Davissen<br>
+                  
+                </font>
+              </td>
+              <td valign="top" align="center">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  Virasawmy Davissen<br>
+                  
+                </font>
+              </td>
+                   <td valign="top" align="center">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                  In Force
+                     </font>
+                   </td>	
+                   <td valign="top" align="center">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      Annual
+                     </font>
+              </td>	       		       		       	       	       	
+                   <td valign="top" align="center">
+                     <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      Medisave
+                     </font>
+                   </td>	
+                 </tr>
+          </table>   	    
+              <table border="0" cellspacing="1" cellpadding="5" width="100%" bgcolor="#ffffff">
+                <tr bgcolor="#0033CC">
+                  <td valign="top" align="left">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Component</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Status</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Sum Assured</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Instalment Premium</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Single Premium</b>
+                    </font>
+                  </td>
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Premium Cessation Date</b>
+                    </font>
+                  </td>	
+                         
+                  <td valign="top" align="center">
+                    <font face="arial, verdana" size="-1" color="#FFFFFF" class="content">
+                      <b>Risk Cessation Date</b>
+                    </font>
+                  </td>
+                </tr>  
+      
+            <tr bgcolor="#A7CEEF">
+              <td valign="top" align="left">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      PruShield&nbsp;[PMSD]
+                     </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+      
+                  In Force
+      
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00	
+                  </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00	
+                </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      08-May-2099
+                </font>
+              </td>	   
+                         
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                       08-May-2099
+                </font>
+              </td>
+            </tr> 
+      
+               <tr bgcolor="#EFEFEF">
+              <td valign="top" align="left">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      PRUShield Basic - CPF&nbsp;[PMS0]
+                     </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+      
+                      In Force
+      
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      286.75	
+                  </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00	
+                </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      08-May-2021
+                </font>
+              </td>	  
+                          
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                       08-May-2021
+                </font>
+              </td>
+            </tr> 
+      
+               <tr bgcolor="#DDDDDD">
+              <td valign="top" align="left">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      PruShield (Premier)&nbsp;[PMR1]
+                     </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+      
+                      In Force
+      
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00
+                </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      327.00	
+                  </font>
+              </td>
+              <td valign="top" align="right">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      0.00	
+                </font>
+              </td>
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                      08-May-2021
+                </font>
+              </td>	  
+                          
+              <td valign="top" align="center">
+                <font face="arial, verdana" size="-1" color="#000000" class="content">
+                       08-May-2021
+                </font>
+              </td>
+            </tr> 
+      
+          </table>
+        </td>
+      </tr>
+    </table>
+    <br><br>
+  
+  
+  <!-- Client Proposal Details -->
+  <a name="proposalinfo"></a>
+  
+  <table border="0" cellpadding="3" cellspacing="1" bgcolor="#FFFFFF">
+  <tr>
+    <td>
+    <table border="0" cellpadding="5" cellspacing="0" bgcolor="#EFEFEF">
+    <tr>
+      <td align="left" colspan="2"><font face="arial, verdana" size="-1" class="content">
+      Legend
+      </font></td>
+    </tr>
+    <tr>
+      <td align="left"><img src="/sfa_sg/raise/common/images/view_pdf_small_icon.gif" border="0"></td>
+      <td align="left" valign="top"><font face="arial, verdana" size="-1" class="content">
+      View Client Summary of Policy Information in PDF Version.
+      </font></td>	
+    </tr>
+    </table>
+    </td>
+  </tr>	
+  </table>
+  <table border="0" cellspacing="1" cellpadding="5" width="100%">
+  <tr>
+    <td>
+      <font class="content" face="arial,verdana" color="#777777" size="-1">
+        <b>Note: PruAsset Guaranteed policy with inception date before the year 2012 is now known as PruInvestor Guaranteed Plus.</b>
+      </font>
+    </td>
+  </tr>
+  </table>
+  
+  
+  
+  
+  <!-- prudential footer -->
+  <br><br><br><br>
+  <table border="0" cellspacing="0" cellpadding="0" width="100%">
+  <tr>
+     <td height="50" align=center><font face="verdana,arial" size="-1" color="#000000" class="copyright">Copyright &copy; Prudential Assurance Company Singapore (Pte) Limited</font></td>
+  </tr>
+  </table>
+  <!-- prudential footer end -->
+  
+  </body>
+  </html>

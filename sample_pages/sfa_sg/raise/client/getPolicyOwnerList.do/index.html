@@ -1,0 +1,3311 @@
+
+
+
+
+
+
+
+<html>
+<head>
+
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Sales Force Automation</title>
+    
+<script language="JavaScript">
+<!--
+	function openWin(URL) {
+   		newWindow = window.open(URL, "myWindow", 'width=800,height=600,toolbar=no,menubar=no,resizable=1,scrollbars=yes');
+	}
+	
+	function stayFocus() {
+		if(window.newWindow != null && window.newWindow.closed == false) {
+			window.newWindow.focus();
+		}
+	}
+
+// -->
+</script>
+</head>
+
+<BODY BGCOLOR="#ffffff" LEFTMARGIN="0" TOPMARGIN="0" MARGINHEIGHT="0" MARGINWIDTH="0" onFocus="stayFocus()">
+
+
+<script type="text/javascript" src="/sfa_sg/common/js/jquery-3.1.1.js"></script>
+<script type="text/javascript" src="/sfa_sg/common/js/jquery-ui-1.7.2.custom.min.js"></script>
+<script type="text/javascript" src="/sfa_sg/common/js/webtrends.load.js"></script>
+<link rel="stylesheet" href="/sfa_sg/common/stylesheet/jquery-ui-1.7.2.custom.css" />
+<link rel="stylesheet" href="/sfa_sg/common/stylesheet/stylesheet.css" type="text/css">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+<style>
+.alertUi {
+    font-family: Verdana, Arial, Helvetica, Sans-serif;
+    font-size: 10px;
+    font-weight: normal;
+}
+</style>
+<script type="text/javascript">
+
+var interval;
+$(document).ready(function(){
+var defaultInterval = 60000;
+var firstWindowTime = 1679999;
+var secondWindowTime =	1799999;
+
+//firstWindowTime = 179999;
+//secondWindowTime =	299999;
+//defaultInterval = 30000;
+
+//var firstWindowTime = 59999;
+//var secondWindowTime = 79999;
+//var defaultInterval = 3000;
+
+document.cookie="lastUpdateTime=" + (new Date().getTime()) + "; path=/sfa_sg/";
+interval = setInterval(function(){
+	var timePassed = new Date().getTime() - getCookie("lastUpdateTime");
+	//alert("  :" + new Date().getTime() + 		  "\n  :" + getCookie("lastUpdateTime") 		  +"\n  :" + timePassed);
+	if(timePassed >= firstWindowTime && timePassed <= secondWindowTime) {
+		open1stWindow()
+	} else if(timePassed > secondWindowTime) {
+		open2ndWindow();
+	}
+}, defaultInterval)
+})
+function open1stWindow(){
+    $("#dialog-confirm").dialog({
+        resizable: false,
+        height:260,
+        width:400,
+        draggable: false,
+        modal: true,
+        buttons: {
+            OK: function() {
+            	needToShow2ndWindow = false;
+            	document.cookie="lastUpdateTime=" +  (new Date().getTime());
+            	var requestIncreaseTimeURL = '/sfa_sg/increaseSessionTime.jsp?dummy='+new Date();
+            	$.ajax({ url:requestIncreaseTimeURL, async:false });
+                $( this ).dialog( "close" );
+            }
+        }
+    });
+
+    $("#dialog-confirm").dialog("open");
+    $("#dialog-confirm").dialog("option", "dialogClass", "alertUi");
+    $("#dialog-confirm").parent().find("button").parent().prop("align", "center");
+    $("#dialog-confirm").parent().find("button").parent().prop("class", "");
+    $("#dialog-confirm").parent().find("button").prop("class", "");
+    $("#dialog-confirm").parent().find("button").addClass("inputbutton");
+    $("#dialog-confirm").prop("style", "color: red; height: 60");
+}
+
+function open2ndWindow(){
+	var requestURL = '/sfa_sg/timeoutDistableSession.jsp?dummy='+new Date();
+	$("#dialog-confirm").dialog("close");
+	clearInterval(interval);
+    $("#dialogInformToRelogin").dialog({
+        resizable: false,
+        draggable: false,
+        height:240,
+        width:400,
+        modal: true,
+        buttons: {
+            OK: function() {
+    	        //window.location.href="/sfa_sg/index.jsp";
+    	        window.location.href="javascript:window.close();";
+                $( this ).dialog( "close" );
+            }
+        }
+    });
+    $("#dialogInformToRelogin").dialog("option", "dialogClass", "alertUi");
+    $("#dialogInformToRelogin").parent().find("button").parent().prop("align", "center");
+    $("#dialogInformToRelogin").parent().find("button").parent().prop("class", "");
+    $("#dialogInformToRelogin").parent().find("button").prop("class", "");
+    $("#dialogInformToRelogin").parent().find("button").addClass("inputbutton");
+    $.ajax({ url:requestURL, async:false });
+} 
+
+function getCookie(cookieName) {
+var arrcookie=document.cookie.split("; ");
+for(var i=0;i<arrcookie.length;i++){
+   var arr=arrcookie[i].split("=");
+   if(cookieName==arr[0])
+     return arr[1];
+}
+return "0";
+}
+
+</script>
+
+<!-- WR/SG/16034 - 	Text changes from SFA Online to PRUSALES ENTERPRISE -->
+<div id="dialog-confirm" title="PRUSALES ENTERPRISE - Your session is about to expire!" class="alertUi" style="display: none; ">
+    <p>You are about to be automatically logged out from your existing session in 2 minutes. Click 'OK' to continue session.</p>
+</div>
+
+<div id="dialogInformToRelogin" title="PRUSALES ENTERPRISE - Your session has expired!" class="alertUi" style="color: red; display: none;">
+    <p>Your session has timed out. Click 'OK' to return to login page.</p>
+</div>
+<!-- SFA Header end -->
+
+
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script type="text/javascript" src="/sfa_sg/common/js/jquery-3.1.1.js"></script>
+<script type="text/javascript" src="/sfa_sg/common/js/jquery-ui-1.7.2.custom.min.js"></script>
+<script type="text/javascript" src="/sfa_sg/common/js/webtrends.load.js"></script>
+<link rel="stylesheet" href="/sfa_sg/common/stylesheet/jquery-ui-1.7.2.custom.css" />
+<link rel="stylesheet" href="/sfa_sg/common/stylesheet/stylesheet.css" type="text/css">
+  
+
+<SCRIPT LANGUAGE="JavaScript1.2"
+        SRC="/sfa_sg/common/js/HM_Loader.js"
+        TYPE="text/javascript">
+</SCRIPT>
+<SCRIPT LANGUAGE="JavaScript1.2" TYPE="text/javascript">
+HM_Array1=[[140,42,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+["Financial Consultant","/sfa_sg/raise/production/getFCPruCredit.do",1,0,1],
+]
+HM_Array1_1=[[],["Financial Consultant Production (PRUcredit$)","/sfa_sg/raise/production/getFCPruCredit.do",1,0,0],
+["Financial Consultant EFYC","/sfa_sg/raise/production/getAdviserEFYC.do",1,0,0],
+["Financial Consultant Persistency","/sfa_sg/raise/production/getAdviserPersistency.do",1,0,0],
+["FC Production Bonus Tracking Report","/sfa_sg/raise/production/getFCProductionBonusTrackingReport.do",1,0,0],
+
+["Financial Consultant Special Persistency Bonus","/sfa_sg/raise/production/getFCSpecialPersBonus.do",1,0,0],
+["Financial Consultant Premium Payment Rate","/sfa_sg/qualitybusiness/PremiumPaymentRate.do",1,0,0],
+["Financial Consultant Single Premium Persistency","/sfa_sg/qualitybusiness/SinglePremiumPersistencyFC.do",1,0,0],
+
+]
+HM_Array2=[[140,120,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+["Proposal Status","/sfa_sg/raise/proposal/getProposalSummary.do",1,0,0]
+]
+HM_Array2_1=[[],]
+HM_Array3=[[140,180,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+["Policy Status","/sfa_sg/raise/policy/getPolicySummary.do",1,0,0],
+["MTA Follow-Ups","/sfa_sg/raise/policy/PolicySummary4Mta.do",1,0,0],
+["NF Reinstatement","/sfa_sg/raise/policy/getNFReinstatemen.do",1,0,0],
+["Lapse Reinstatement","/sfa_sg/raise/policy/getLapseReinstatement.do",1,0,0],
+["Redating","/sfa_sg/raise/policy/getRedating.do",1,0,0]
+]
+HM_Array3_1=[[],]
+HM_Array3_2=[[],]
+HM_Array3_3=[[],]
+HM_Array3_4=[[],]
+HM_Array3_5=[[],]
+HM_Array4=[[100,235,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+["Claims History","/sfa_sg/raise/claims/getClaimsHistory.do",1,0,0]
+]
+HM_Array4_1=[[],]
+HM_Array5=[[140,285,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+["Client List","/sfa_sg/raise/client/getPolicyOwnerList.do",1,0,1],
+["Birthday List","/sfa_sg/raise/client/getPolicyOwnerBirthdayList.do",1,0,1],
+["Print Client List","/sfa_sg/raise/client/getAllMailingLabels.do",1,0,1]
+]
+HM_Array5_1=[[],["By Policyowner","/sfa_sg/raise/client/getPolicyOwnerList.do",1,0,0],
+["By Life Assured","/sfa_sg/raise/client/getLifeAssuredList.do",1,0,0],
+["By Deceased Policyowner","/sfa_sg/raise/client/getDeceasedList.do",1,0,0],
+["Active Client","/sfa_sg/raise/client/getActiveClientList.do",1,0,0],
+["Non-Active Client","/sfa_sg/raise/client/getNonActiveClientList.do",1,0,0]
+]
+HM_Array5_2=[[],["By Policyowner","/sfa_sg/raise/client/getPolicyOwnerBirthdayList.do",1,0,0],
+["By Life Assured","/sfa_sg/raise/client/getLifeAssuredBirthdayList.do",1,0,0]
+]
+HM_Array5_3=[[],["Mailing Labels & Envelope","/sfa_sg/raise/client/getAllMailingLabels.do",1,0,0]
+]
+HM_Array6=[[140,330,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+["FC Registers","/sfa_sg/raise/report/getPremiumDueList.do",1,0,1],
+["Promotions","/sfa_sg/pruexclusive/report/getPromotionsCampaignCustomerListing.do",1,0,0],
+["PruCard","/sfa_sg/pruexclusive/report/getCardCampaignCustomerListing.do",1,0,0],
+["New Servicing Requests","/sfa_sg/raise/report/newServicingRequests.do",1,0,0],
+["Orphan Client Assignment","/sfa_sg/raise/report/OrphanClientAssignment.do",1,0,0],
+["Orphan Client Contact","/sfa_sg/raise/report/OrphanClientContactCommand.do",1,0,0],
+["ROP Listing","/sfa_sg/raise/report/getROPValueList.do",1,0,0],
+["ROP Grading Report","/sfa_sg/raise/report/getROPGradingReport.do",1,0,0]
+]
+HM_Array6_1=[[],["Premium Due List","/sfa_sg/raise/report/getPremiumDueList.do",1,0,0],
+["Automatic Premium Loan (APL) List","/sfa_sg/raise/report/getAPLRegister.do",1,0,0],
+["Unpaid Premium (Non-Forfeiture) Notice","/sfa_sg/raise/report/getNonForfeitureReport.do",1,0,0],
+["CPF Auto Paid Up List","/sfa_sg/raise/report/getAutoPaidUpRegister.do",1,0,0],
+["Bonus List","/sfa_sg/raise/report/getBonusRegister.do",1,0,0]
+]
+HM_Array6_2=[[],]
+HM_Array6_3=[[],]
+HM_Array6_4=[[],]
+HM_Array6_5=[[],]
+HM_Array6_6=[[],]
+HM_Array6_7=[[],]
+HM_Array6_8=[[],]
+HM_Array7=[[180,390,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+["Awards & Performance 2019/2020","/sfa_sg/prusales/awards/awardsHome.do",1,0,0],
+["Awards & Performance 2018/2019","/sfa_sg/prusales_prev/awards/awardsHome.do",1,0,0],
+]
+HM_Array7_1=[[],]
+HM_Array7_2=[[],]
+HM_Array8=[[150,529,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+["Financial Consultant","/sfa_sg/raise/income/getAdviserIncomeSummary.do",1,0,1]
+]
+HM_Array8_1=[[],["Financial Consultant Income Summary","/sfa_sg/raise/income/getAdviserIncomeSummary.do",1,0,0],
+["FC Production Bonus Report","/sfa_sg/raise/income/adviserProductionBonusReportCommand.do",1,0,0],
+["FC Annual Income Statement","/sfa_sg/raise/income/annualIncomeStatementCommand.do",1,0,0],
+["FC Shares Incentive Statement","/sfa_sg/raise/income/getSharesFCIncentiveStatement.do",1,0,0],
+["Long Term Incentive Pool","/sfa_sg/raise/income/longTermIncentivepoolFC.do",1,0,0],
+
+
+["Non-Cash Benefits Statement","/sfa_sg/raise/income/adviserNonCashBenefitsStatement.do",1,0,0],
+
+
+["Self-Billing Tax Invoice","/sfa_sg/raise/income/selfBillingTaxInvoice.do",1,0,0],
+["Commission Rate Table","/sfa_sg/commonReportDisplay.do",1,0,0],
+["Request for Income Statement","/sfa_sg/raise/income/incomeStatementRequestCommand.do",1,0,1],
+["View Requested Income Statements","/sfa_sg/raise/income/viewIncomeStatementRequestCommand.do",1,0,0]
+]
+HM_Array8_1_9=[[],["New Request","/sfa_sg/raise/income/incomeStatementRequestCommand.do",1,0,0],
+["View Requested Income Statements","/sfa_sg/raise/income/viewIncomeStatementRequestCommand.do",1,0,0]
+]
+HM_Array9=[[140,640,80,"#336699","white","white","#FF9900","#336699","#CCCCCC",0,0,0,1,1,1,"null","null",,,,],
+["Financial Consultant","/sfa_sg/raise/incentives/getTrackingFCHomeCommand.do",1,0,1]
+]
+HM_Array9_1=[[],["Incentive Report (Tracking)","/sfa_sg/raise/incentives/getTrackingFCHomeCommand.do",1,0,0],
+["Incentive Report (Ended)","/sfa_sg/raise/incentives/getTrackingInactiveFCHomeCommand.do",1,0,0]
+]
+
+
+HM_GL_ImageSrc = "/sfa_sg/raise/common/images/hm_more_grey_right.gif";
+HM_GL_ImageSrcLeft = "";
+
+HM_GL_ImageSrcOver = "/sfa_sg/raise/common/images/hm_more_cyan_right.gif";
+HM_GL_ImageSrcLeftOver = "";
+if(HM_IsMenu) {
+	document.write("<SCR" + "IPT LANGUAGE='JavaScript1.2' SRC='/sfa_sg/common/js/HM_Script"+ HM_BrowserString +".js' TYPE='text/javascript'><\/SCR" + "IPT>");
+}
+</SCRIPT>
+
+
+
+
+
+<SCRIPT LANGUAGE="JavaScript1.2" TYPE="text/javascript">
+<!--
+    function setSelectedUnit(comboIndexToSet,myval){
+      for(var i=0;i<comboIndexToSet.options.length;i++){
+        if( comboIndexToSet.options[i].value.toUpperCase() == myval.toUpperCase())
+        {
+           comboIndexToSet.selectedIndex=i;
+           break;
+        }
+      }
+    }
+
+//-->
+</script>
+<div style="width:100%;">
+  <div style="background-color: #e33b39;border: none;border-radius: 0;box-shadow: 0 3px 2px 0 rgba(204, 204, 204, 0.8);display:block;min-height:60px;">
+    <div style="  margin-left: auto;margin-right: auto;max-width: 1170px;padding-left: 15px;padding-right: 15px;width: auto;">
+      <div>
+        <div style="float:left;">
+          <div style="display:block; float:left;"><a href="#"><img src="/sfa_sg/common/images/logo.png" border="0" /></a></div>
+          <div style=" float: left;"><a href="#" style=" color: #fff;display: block; font-family: Arial,Helvetica,sans-serif; font-size: 24px;font-weight: 700;margin-left: 15px;margin-top: 15px;text-decoration:none;">PRU<span style="font-weight:normal;">RAISe</span></a></div>
+        </div>
+        <div style="float:right;">
+          <a href="javascript:window.close()" class="logout" style=" color: #fff;display: block;margin-top: 21px;text-decoration:none;font-family: Arial,Helvetica,sans-serif; font-size:13px;">Close</a>
+        </div>
+        <div style="float:right;">
+          &nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+        <div style="float:right;">
+          <a href="/sfa_sg/newsfahome.do" class="logout" style=" color: #fff;display: block;margin-top: 21px;text-decoration:none;font-family: Arial,Helvetica,sans-serif; font-size:13px;">PRURAISe</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+    <td valign="top" width="100%">
+    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+      <tr bgcolor="#E5E3E4">
+      <td width="2" height="22" nowrap><img src="/sfa_sg/common/images/spacer.gif" width="1" height="1"></td>
+      
+      
+        <td><a href="#" ONMOUSEOVER="popUp('HM_Menu1',event)" ONMOUSEOUT="popDown('HM_Menu1')"><img src="/sfa_sg/raise/common/images/sfanew_ais_production_option.gif " alt="Production" border="0"></a></td>
+        <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>      
+        <td><a href="#" ONMOUSEOVER="popUp('HM_Menu2',event)" ONMOUSEOUT="popDown('HM_Menu2')"><img src="/sfa_sg/raise/common/images/sfanew_ais_proposal_option.gif" alt="Proposal" border="0"></a></td>
+        <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>      
+        <td><a href="#" ONMOUSEOVER="popUp('HM_Menu3',event)" ONMOUSEOUT="popDown('HM_Menu3')"><img src="/sfa_sg/raise/common/images/sfanew_ais_policy_option.gif" alt="Policy" border="0"></a></td>
+        <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>      
+        <td><a href="#" ONMOUSEOVER="popUp('HM_Menu4',event)" ONMOUSEOUT="popDown('HM_Menu4')"><img src="/sfa_sg/raise/common/images/sfanew_ais_claims_option.jpg" alt="Claims" border="0"></a></td>
+        <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>
+        <td><a href="#" ONMOUSEOVER="popUp('HM_Menu5',event)" ONMOUSEOUT="popDown('HM_Menu5')"><img src="/sfa_sg/raise/common/images/sfanew_ais_client_option.gif" alt="Client" border="0"></a></td>
+        <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>  
+        <td><a href="#" ONMOUSEOVER="popUp('HM_Menu6',event)" ONMOUSEOUT="popDown('HM_Menu6')"><img src="/sfa_sg/raise/common/images/sfanew_ais_reports_option.gif" alt="Reports" border="0"></a></td>
+        <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td> 
+        <!--  td><a href="#" ONMOUSEOVER="popUp('HM_Menu7',event)" ONMOUSEOUT="popDown('HM_Menu7')"><img src="/sfa_sg/raise/common/images/sfanew_ais_awards_option.gif" alt="Awards and Performance" border="0"></a></td -->
+        <td><a href="#" ONMOUSEOVER="popUp('HM_Menu7',event)" ONMOUSEOUT="popDown('HM_Menu7')"><img src="/sfa_sg/raise/common/images/sfanew_ais_awards_option.gif" alt="Awards and Performance" border="0"></a></td>
+              <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td> 
+              <td><a href="#" ONMOUSEOVER="popUp('HM_Menu8',event)" ONMOUSEOUT="popDown('HM_Menu8')"><img src="/sfa_sg/raise/common/images/sfanew_ais_income_option.gif" alt="Income Earnings" border="0"></a></td>    
+        <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>     
+        <td><a href="#" ONMOUSEOVER="popUp('HM_Menu9',event)" ONMOUSEOUT="popDown('HM_Menu9')"><img src="/sfa_sg/raise/common/images/sfanew_ais_incentive_option.gif" alt="Incentive" border="0"></a></td>
+      
+      <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>
+            
+      <td><a href="/sfa_sg/raise/myrewards/getMyRewards.do"><img src="/sfa_sg/raise/common/images/sfanew_my_rewards_option.gif" alt="MyRewards" border="0"></a></td>
+      <td><img src="/sfa_sg/raise/common/images/sfanew_ais_splitbar.gif"></td>
+            
+      <td><a href="/sfa_sg/raise/search/getSearchPage.do"><img src="/sfa_sg/raise/common/images/sfanew_ais_search_option.gif" alt="Search" border="0"></a></td>
+      <!--<td><a href="/sfa_sg/raise/search/getSearchPage.do"><img src="/sfa_sg/raise/common/images/sfanew_ais_search_option.gif" border="0"></a></td>-->
+            <td width="100%"><img src="/sfa_sg/common/images/spacer.gif" width="1" height="1"></td>
+        </tr>
+        </table>
+
+        <table border="0" cellspacing="0" cellpadding="0" width="100%">
+        <tr bgcolor=#FFFFFF>
+            <td height=1><img src="/sfa_sg/common/images/spacer.gif" width="1" height="1"></td>
+        </tr>
+        </table>
+  </td>
+</tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+<script language="JavaScript">
+<!--
+	function doManagerSubmit(actionstr) {
+        			
+		var waitStr = 'Please wait...';
+
+		document.Form.selectedAdviserID.selectedIndex = 0;
+	    document.Form.RequestedPage.value = "1";
+
+		if(document.Form.submitbutton != null && document.Form.submitbutton.value != waitStr) {
+			if(document.Form.selectedUnitID.selectedIndex == 0) {
+				alert('Select a Unit.'); 
+				return false;
+			}  // if
+
+        	document.Form.action = actionstr;
+			document.Form.submitbutton.value = waitStr;
+			document.Form.submit();
+		}  // if
+        			
+	}  // doManagerSubmit
+
+	function doSubmit(actionStr) {
+
+		var waitStr = 'Please wait...';
+		var checkError = new Number();
+
+		if(document.Form.submitbutton != null && document.Form.submitbutton.value != waitStr) {
+			if(document.Form.selectedUnitID != undefined && document.Form.selectedUnitID != 'null') {
+				if(document.Form.selectedUnitID.selectedIndex == 0) {
+					alert('Select a Unit.'); 
+					++checkError;
+				}  // if
+			}
+			if(document.Form.selectedAdviserID != undefined && document.Form.selectedAdviserID != 'null') {
+				if(document.Form.selectedAdviserID.selectedIndex == 0) {
+					alert('Select a Financial Consultant.');
+					++checkError;
+				}  // if
+			}
+			
+			if(checkError == 0) {
+		       	document.Form.action = actionStr;
+				document.Form.submitbutton.value = waitStr;
+				document.Form.submit();
+			}  // if
+		}
+	}  // doSubmit
+	
+// -->
+</script>
+<table border="0" cellspacing="1" cellpadding="5" width="100%">
+	<tr>
+		<td align="center" colspan="3" valign="top">
+			<font face="arial, verdana" size="-1" color="#000000" class="content">
+		        <b>Client List - 
+		        
+		        By Policyowner
+		        <!-- //CT 09 March 2015 -->
+		        
+		        </b><br>   
+		        (<b>Financial Consultant:</b> 
+		        	<font color="#CC0000"><b>Cindy Wong</b></font> [<b>K98-20774</b>])
+	       	</font>	
+		</td>
+		<td width="5%" align="right" valign="top"><img src="/sfa_sg/raise/common/images/sfanew_raise_portrait_icon.gif" border="0" width=26 height=34>&nbsp;&nbsp;</td>
+	</tr>
+</table>
+
+
+
+
+
+<table border="0" cellspacing="1" cellpadding="5" width="100%">
+	<tr>
+		<td align="left">
+			<font face="arial, verdana" size="-1" color="#000000" class="content">
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=A&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=7CF75C6D93A5E7955A27940BCAB954D2" >A</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=B&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=E6A2A09EB05603EF9F57C0ECD1E45412" >B</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=C&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=9A0D5F09D76D9BF1C4F32CA0E8BF99A8" >C</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=D&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=D12444B3233A241F6FA6E54C602BA30E" >D</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=E&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=1102CE46A6E8CE28B68CA385EC448013" >E</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=F&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=ADCC8BBF256F21924EAFFB09405059AD" >F</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=G&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=19779EEC2E32130786C426291F6E8D65" >G</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=H&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=35760887BC115389987E8B165E9DBEFB" >H</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=I&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=FC5B95B44BFF4696767B040B825C6BCD" >I</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=J&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=7430B40FA9392B90B4FBABA84BE7DF2C" >J</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=K&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=BEB523F6509720F174CF820FBE8F01D4" >K</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=L&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=D68A33F7A9135B5631A427729F1F9068" >L</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=M&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=025D9B4957136297A216BD5F699A765E" >M</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=N&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=1E412270805EEC77D7DC894AF8C83F99" >N</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=O&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=67305F0E5C11054094B30CCF89FA68F5" >O</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=P&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=4FA8C2146592AF538CA21A9595A0DE23" >P</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=Q&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=9699968B0A76750F3B4A4AD32B8F1B8E" >Q</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=R&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=5E8F80E261D5E135322B9C6EB7E0C661" >R</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=S&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=EDAFB6588BE33DC800C8A4ACE4EE94E6" >S</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=T&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=7CA4E120D3AB00C12344F58A0770F2AF" >T</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=U&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=D306C2709CDB7CC4F4DE6ABB2D1BA329" >U</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=V&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=9B5DF20DC95F72FBC610CE17E8014A61" >V</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=W&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=4B593F39CBBBB7550EB95CCE14D56AC5" >W</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=X&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=89166A4A4ACAD88BE5935F39ABAA3C1E" >X</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=Y&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=934B45423895FCBFBCCFE57E39456050" >Y</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column ST-->
+						<a href="/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=Z&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=AD2778C50896194930925AAE7EC3F8B6" >Z</a>
+						<!-- SGPPRUR-138 WR/SG/16/130 - MultiChannel Setup for CSS - new Channel column EN-->
+	
+					|
+				
+						View All
+
+			</font>	
+   		</td>
+	</tr>
+</table>
+
+<input type="hidden" name="startWith" value="*">
+
+<table border="0" cellspacing="1" cellpadding="5" width="100%">
+	<tr>
+  
+		<td align="left"><font face="arial, verdana" size=5 color="#000000" style="font-size:30">
+	    	All</font>
+		</td>
+   
+		<td align="right">
+			<font face="arial, verdana" size="-1" color="#000000" class="content">	
+  
+		Records  1 - 20 of <b>424</b>&nbsp;&nbsp;&nbsp;First | Previous |   <A href="/sfa_sg/raise/client/getPolicyOwnerList.do/index1.html?&selectedPolicyChannel=All&startWith=*&selectedAdviserID=460748&selectedUnitID=133531&RequestedPage=2&sid=C6D063AC41939EBB36ABFAE9FAC13705">Next</A>  |  <A href="/sfa_sg/raise/client/getPolicyOwnerList.do?&selectedPolicyChannel=All&startWith=*&selectedAdviserID=460748&selectedUnitID=133531&RequestedPage=22&sid=AAAE5464CA6DE2315FBCBBF0CD00997F">Last</A>  	
+
+			</font>
+		</td>
+	</tr>
+</table>
+
+<!-- start include page for client -->
+
+
+<table border="0" cellspacing="1" cellpadding="5" width=100%>
+	<tr bgcolor=#6699CC>
+		
+			
+			<td valign="top" align="left" width="20%" nowrap>
+				<font face="arial,verdana" size="-1" color="#FFFFFF" class="content">
+					<b>Name<br>(Identification Number)</b>
+				</font>
+			</td>
+			<td valign="top" align="left" width="12%" nowrap>
+				<font face="arial,verdana" size="-1" color="#FFFFFF" class="content">
+					<b>Home Number</b>
+				</font>
+			</td>
+			<td valign="top" align="left" width="12%" nowrap>
+				<font face="arial,verdana" size="-1" color="#FFFFFF" class="content">
+					<b>Mobile Number</b>                   
+				</font>
+			</td>
+			<td valign="top" align="left" width="12%" nowrap>
+				<font face="arial,verdana" size="-1" color="#FFFFFF" class="content">
+					<b>Office Number</b>
+				</font>
+			</td>
+			<td valign="top" align="left" width="20%" nowrap>
+				<font face="arial,verdana" size="-1" color="#FFFFFF" class="content">
+					<b>Nationality</b>
+				</font>
+			</td>
+			<td valign="top" align="left" width="8%" nowrap>
+				<font face="arial,verdana" size="-1" color="#FFFFFF" class="content">
+					<b>Gender</b>
+				</font>
+			</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+			<td valign="top" align="left" width="26%" nowrap colspan="2">
+				<font face="arial,verdana" size="-1" color="#FFFFFF" class="content">
+					<b>Consent Information</b>
+				</font>
+			</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+	</tr>
+
+	
+
+	<tr bgcolor="#F0F0F0">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=15620800&sid=934702BFB5AD19878FD3B68276AADC15"  id="S8330027B">
+						Mr
+						A Eswaran Reddiar<br>
+						
+						
+					   	(S8330027B)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-92723510
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Singaporean
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Male</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#F0F0F0">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					122a Sengkang East Way 02-53 Singapore 541122
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#E6E6E6">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=16314840&sid=025AC8B951E4C139181E4CB5E189586A"  id="S7028824I">
+						Mr
+						Abdul Rahman Bin Mohamed Akbar<br>
+						
+						
+					   	(S7028824I)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-81518456
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Singaporean
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Male</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#E6E6E6">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					872B TAMPINES STREET 86 16-61 Singapore 522872
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+							(expires on 18-Apr-2021 )
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					Pass</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#F0F0F0">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=16483474&sid=1E8E0273B06598C8A52C0AD9D097CD48"  id="G3221938T">
+						Ms
+						Adarkar Kruttika Arun<br>
+						
+						
+					   	(G3221938T)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-83818735
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Indian
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Female</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#F0F0F0">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					730 BEDOK RESERVOIR ROAD 14-08 WATERFRONT ISLE Singapore 479261
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#E6E6E6">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=15929752&sid=1A9BFD45AB67C63C7DAABE676B4B04DA"  id="S8816212I">
+						Mr
+						Adhitya Sethaputra<br>
+						
+						
+					   	(S8816212I)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			41-762324901
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Singaporean
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Male</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#E6E6E6">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					15 Rue Goetz-Monin Geneva Switzerland 1205
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#F0F0F0">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=16253730&sid=60043ED7B830E84A2709357738704FD4"  id="S8857989E">
+						Mr
+						Aditya Babel<br>
+						
+						
+					   	(S8857989E)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-98175430
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Singapore PR
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Male</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#F0F0F0">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					2 Marina Boulevard #48-07 Singapore 018987
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#E6E6E6">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=16090224&sid=AF99CD9B62A20A08AB974EE6A80CECF9"  id="A30335774">
+						Mr
+						Adrian Wai Chien Hui<br>
+						
+						
+					   	(A30335774)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-84411819
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Malaysian
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Male</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#E6E6E6">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					657A Jurong West St 65 #13-672 Singapore 641657
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#F0F0F0">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=16459961&sid=72951A43EA4444ACEFC2E907E7D17D3D"  id="G3803813W">
+						Mrs
+						Ahmed Freeha Noreen<br>
+						
+						
+					   	(G3803813W)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-85315202
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			United Kingdom
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Female</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#F0F0F0">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					58 TREVOSE CRESCENT #01-18 THE TREVOSE Singapore 298089
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#E6E6E6">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=16129400&sid=0197DBFAC8F83552DF2250383BCE59E7"  id="A25952010">
+						Mr
+						Alvin Yeap Soon Ming<br>
+						
+						
+					   	(A25952010)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-85699689
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Malaysian
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Male</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#E6E6E6">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					38 LORONG 30 GEYLANG #06-34 GUILLEMARD EDGE Singapore 398371
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#F0F0F0">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=16423141&sid=CBDDA2606A2DE83441F62EA77E0AFE5E"  id="G6111530M">
+						Mr
+						Amar Erwin James Tolentino<br>
+						
+						
+					   	(G6111530M)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-98680182
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Filipino
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Male</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#F0F0F0">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					131 BISHAN STREET 12 04-215 Singapore 570131
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#E6E6E6">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=15958357&sid=1991C6CC7E7E2BF01F0BC51B62815C87"  id="G6225325N">
+						Ms
+						Amar Karen Jade Baguio<br>
+						
+						
+					   	(G6225325N)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-93275624
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-84359547
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Filipino
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Female</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#E6E6E6">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					131 Bishan Street 12 #04-215 Singapore 570131
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#F0F0F0">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=14974499&sid=D58F38DD6ED8CD857A11F5000801A2B3"  id="S8106359A">
+						Miss
+						Amelia Goh Keqing<br>
+						
+						
+					   	(S8106359A)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			64891278
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			82013692
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Singaporean
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Female</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#F0F0F0">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					10 Hougang St 92 #06-08 Singapore 538687
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#E6E6E6">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=15510170&sid=C23FE4B801D07D6ABBA723F4F24FAE79"  id="S0124355A">
+						Mr
+						Ang Teck Beng<br>
+						
+						
+					   	(S0124355A)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-90487371
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			64380872
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Singaporean
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Male</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#E6E6E6">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					6 Sin Ming Road #02-01 Singapore 575585
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#F0F0F0">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=16570078&sid=28EF0DE1754B8FD62076E4CD8EFA30BA"  id="S8740462E">
+						Mr
+						Ang Yi Chong, Amos<br>
+						
+						
+					   	(S8740462E)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-96351037
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Singaporean
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Male</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#F0F0F0">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					51 NEW UPPER CHANGI ROAD #09-1528 Singapore 461051
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#E6E6E6">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=16068300&sid=C98DA7F7860AD6D6F445085583E37909"  id="U00300469">
+						Mr
+						Anil Erkol<br>
+						
+						
+					   	(U00300469)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-87550154
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Turk
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Male</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#E6E6E6">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					89 Tampines Avenue 1 #12-33 Waterview Singapore 528689
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#F0F0F0">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=15416434&sid=466B7941978847A378BDB6E6B32D226A"  id="S6972741G">
+						Mr
+						Anthony Kek Geok San<br>
+						
+						
+					   	(S6972741G)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-97967418
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Singaporean
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Male</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#F0F0F0">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					268D Compassvale Link #15-05 Singapore 544268
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#E6E6E6">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=16298033&sid=D05277BC0FAE1ADF6F9C2B833BDA2529"  id="G1662567T">
+						Ms
+						Aslam Benish<br>
+						
+						
+					   	(G1662567T)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-83498621
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Indian
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Female</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#E6E6E6">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					19 CAIRNHILL CIRCLE #19-02 THE LIGHT @ CAIRNHILL Singapore 229768
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#F0F0F0">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=15627436&sid=72B22E11B87F05710F044D8CDF94E807"  id="S8942339B">
+						Miss
+						Athirah Binte Hassan<br>
+						
+						
+					   	(S8942339B)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			64069320
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-88138797
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Singaporean
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Female</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#F0F0F0">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					233 PENDING ROAD 02-05 Singapore 670233
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#E6E6E6">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=15092383&sid=48643EE8F1ECB12C4EEDF3D0BA95932B"  id="S8334916F">
+						Mr
+						Bala Murugan s/o Krishnan<br>
+						
+						
+					   	(S8334916F)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-84605246
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Singaporean
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Male</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#E6E6E6">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					188 Boon Lay Drive #01-110 Singapore 640188
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#F0F0F0">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=16161070&sid=C598EC6E597D73BD5AB281AA1A71B069"  id="S7664379B">
+						Mr
+						Baskaran Ashok Kumar<br>
+						
+						
+					   	(S7664379B)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-84688445
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Singapore PR
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Male</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#F0F0F0">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					330 Jurong East Avenue 1 #02-1704 Singapore 600330
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#F0F0F0">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+	<tr bgcolor="#E6E6E6">
+		
+			
+			<td rowspan="4" valign="top">
+				<font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+					<a href="/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=16376326&sid=79FADBE0673C397F6A04E6F2670C5256"  id="S8660495G">
+						Dr
+						Benjamin Lim Tze Ying<br>
+						
+						
+					   	(S8660495G)
+					   	
+					</a>
+				
+				</font><br>
+			</td>
+			<td valign="top" nowrap height="25"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			65-87004048
+			
+			</font></td>
+			<td valign="top" nowrap><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			-
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+			
+			
+			Singaporean
+			
+			</font></td>
+			<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">Male</font></td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Date </b>:
+						<!-- 1820 change 9999-12-31 to -  -->
+						
+						
+					</font>
+				</td>
+				<td valign="top" width="13%">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Status</b>:
+					</font>
+				</td>
+			<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+		
+		
+	</tr>
+		
+			<tr bgcolor="#E6E6E6">
+				<td rowspan="3" valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+					
+						<b>Residential Address</b>:
+					
+					</font>
+				</td>
+				<td rowspan="3" colspan="2" valign="top" height="50"><font face="arial,verdana" size="-1" color="#000000" class="content">
+				
+				
+					116 SIMEI STREET 1 08-586 Singapore 520116
+					</font>
+				</td>
+			</tr>
+		
+	
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 Start -->
+		
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>CKA Result
+						:
+						</b>
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					NA</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Post</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Email</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		<tr bgcolor="#E6E6E6">
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>6 Transactions with PACS in the last 3 years</b>:
+					</font>
+				</td>
+				<td valign="top"><font face="arial,verdana" size="-1" color="#000000" class="content">
+					No</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 Start -->
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>Telephone</b>:
+					</font>
+				</td>
+				<td valign="top">
+					<font face="arial,verdana" size="-1" color="#000000" class="content">
+						<b>SMS</b>:
+					</font>
+				</td>
+				<!-- SGPSFA-1820 Project Workstream - PDPA Consent; Keyman; 20140210 End -->
+			</tr>
+		
+		<!-- SGPSFA-1337 Display customers CKA data on Raise Added by Vector Zhong 20130306 End -->
+
+</table>
+<!-- end include page for client -->
+
+<table border="0" cellspacing="1" cellpadding="5" width="100%">
+	<tr>
+		<td align="right">
+			<font face="arial, verdana" size="-1" color="#000000" class="content">
+   
+		Records  1 - 20 of <b>424</b>&nbsp;&nbsp;&nbsp;First | Previous |   <A href="/sfa_sg/raise/client/getPolicyOwnerList.do?&selectedPolicyChannel=All&startWith=*&selectedAdviserID=460748&selectedUnitID=133531&RequestedPage=2&sid=C6D063AC41939EBB36ABFAE9FAC13705">Next</A>  |  <A href="/sfa_sg/raise/client/getPolicyOwnerList.do?&selectedPolicyChannel=All&startWith=*&selectedAdviserID=460748&selectedUnitID=133531&RequestedPage=22&sid=AAAE5464CA6DE2315FBCBBF0CD00997F">Last</A>  	
+  	
+	     
+			</font>
+		</td>
+	</tr>
+</table>
+<!-- CT 09 March 2015 -->
+<div style="margin:10px 25px"><font face="verdana,arial" size="-1" color="#777777" class="content"><b>Notes</b></font></div>
+<table cellspacing="0" cellpadding="0" style="border:solid 3px #E6E6E6; width: 500px;margin-left: 20px;">
+<tr>
+<td>
+
+
+<table border="0" cellpadding="3" cellspacing="0" width="100%" bgcolor="#F7F7F7">
+		<tr>
+			<td>
+			<table border="0" cellspacing="2" cellpadding="2">
+			<tr>
+				<td>
+				<table cellspacing="2" cellpadding="2" align="center" width="100%">
+				<tr>
+					<td><font face="verdana,arial" size="-1" color="#777777" class="content"><b>Status under Consent Info</b></font></td>
+				</tr>
+				<tr><td></td></tr>
+				<tr>
+					<td><font face="verdana,arial" size="-1" color="#777777" class="content"><b>Yes</b></font><font face="arial,verdana" size="-1" color="#7d7d7d" class="content" style="font-size: 12px"> - Client has opted and agreed to be contacted by Prudential Rep(s) on
+					 marketing information about products and services via post, email, telephone or sms</font></td>
+				</tr>
+				<tr><td></td></tr>
+				<tr>
+					<td><font face="verdana,arial" size="-1" color="#777777" class="content"><b>No</b></font><font face="arial,verdana" size="-1" color="#7d7d7d" class="content" style="font-size: 12px"> - Client has opted and disagreed to be contacted by Prudential Rep(s) on
+					 marketing information about products and services via post, email, telephone or SMS</font></td>
+				</tr>
+				<tr><td></td></tr>
+				<tr>
+					<td><font face="verdana,arial" size="-1" color="#777777" class="content"><b>Existing</b></font><font face="arial,verdana" size="-1" color="#7d7d7d" class="content" style="font-size: 12px"> - Existing Clients before PDPA implementation who have not indicated their consent status</font></td>
+				</tr>
+				</table>
+				</td>
+			</tr>
+			</table>
+			</td>
+		</tr>
+		</table>
+</td>
+</tr>
+</table>
+<!-- END -->
+
+<!-- prudential footer -->
+<br><br><br><br>
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+   <td height="50" align=center><font face="verdana,arial" size="-1" color="#000000" class="copyright">Copyright &copy; Prudential Assurance Company Singapore (Pte) Limited</font></td>
+</tr>
+</table>
+<!-- prudential footer end -->
+
+</body>
+</html>

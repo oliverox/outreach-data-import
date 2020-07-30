@@ -1,0 +1,3 @@
+URL to client list:    https://sfa.prudential.com.sg/sfa_sg/raise/client/getPolicyOwnerList.do?startWith=*&selectedUnitID=133531&selectedAdviserID=460748&selectedPolicyChannel=All&sid=8FD5081B4C5A0D8A0C883E42E38DA721
+
+URL to client details: https://sfa.prudential.com.sg/sfa_sg/raise/client/getClientDetails.do?selectedAdviserID=460748&clientID=16293281&sid=AE2E6FBEE6AC9E01C819C51F9DC44DDD

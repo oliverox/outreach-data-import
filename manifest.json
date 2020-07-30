@@ -1,0 +1,32 @@
+{
+	"manifest_version": 2,
+	"name": "Outreach Data Importer",
+	"version": "1.0.0",
+	"description": "Automatically import data from PruRaise to Outreach",
+	"short_name": "Outreach Data Importer",
+	"permissions": [ "activeTab", "declarativeContent", "storage", "webNavigation" ],
+	"content_scripts": [
+		{
+			"matches": [ "*://*/*getPolicyOwnerList.do*" ],
+			"run_at": "document_idle",
+			"js": [ "background.js" ]
+		}
+	],
+	"background": {
+		"scripts": [ "background.js" ],
+		"persistent": false
+	},
+	"browser_action": {
+		"default_popup": "popup.html",
+		"default_icon": {
+			"16": "icons/icon16.png",
+			"32": "icons/icon32.png",
+			"512": "icons/icon512.png"
+		}
+	},
+	"icons": {
+		"16": "icons/icon16.png",
+		"32": "icons/icon32.png",
+		"512": "icons/icon512.png"
+	}
+}
